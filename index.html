@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <form id="contact-form" class="hts-cf">
+
+        <h3 class="hts-cf-title">Contact Us!</h3>
+        <div id="hts-f-success" class="s-e-message">
+            <p>Thank you for contacting us! We will get back to you as soon as possible!</p>
+        </div>
+        <div id="hts-f-err" class="s-e-message">
+            <p id="hts-e-message"></p>
+        </div>
+        <input id="name" class="hts-cf-input" type="text" name="Name" placeholder="Name">
+        <input id="email" class="hts-cf-input" type="email" name="email" placeholder="Email">
+        <input id="phone" class="hts-cf-input" type="tel" name="phone" placeholder="Phone Number">
+        <textarea id="message" class="hts-cf-input hts-cf-txtarea" type="text" name="message"
+            placeholder="Message"></textarea>
+        <div class="hts-cf-check">
+            <h4 class="hts-c-info">Please confirm you are human</h4>
+            <p class="hts-c-info">What is <span id="num1"></span> + <span id="num2"></span>?</p>
+            <input id="hts-c-answer" class="hts-c-info hts-c-input" type="number">
+        </div>
+        <button id="submit-btn" class="hts-cf-btn" type="submit">Send</button>
+    </form>
+</body>
+<script>
+    $(document).ready(function () {
+        console.log('ready')
+        // form values
+        const form = $("#contact-form");
+        const nameEl = $("#name");
+        const emailEl = $("#email");
+        const phoneEl = $("#phone");
+        const messageEl = $("#message");
+        const successMessage = $("#hts-f-success");
+        const errMessageDiv = $("#hts-f-err");
+        const errMessage = $("#hts-e-message");
+
+        // other variables
+        const submitBtn = $("#submit-btn");
+        const checkNumOneEl = $("#num1");
+        const checkNumTwoEl = $("#num2");
+        const userAnswerEl = $("#hts-c-answer");
+        let humanPass = false;
+        successMessage.hide();
+        errMessageDiv.hide();
+        // make up random number
+        var a = Math.floor(Math.random() * 11);
+        var b = Math.floor(Math.random() * 11);
+        // pass random nums into equation
+        checkNumOneEl.text(a)
+        checkNumTwoEl.text(b)
+        // get sum
+        var sum = a + b;
+        const successFunc = () => {
+            errMessageDiv.hide();
+            successMessage.show();
+            nameEl.val('')
+            emailEl.val('')
+            phoneEl.val('')
+            messageEl.val('')
+            userAnswerEl.val('')
+            setTimeout(() => {
+                successMessage.fadeOut(500);
+            }, 3000)
+        }
+        // make humanpass = true
+        submitBtn.on('click', (e) => {
+            e.preventDefault();
+            console.log('func')
+            let userSum = parseInt(userAnswerEl.val());
+            let email = {
+                name: nameEl.val(),
+                email: emailEl.val(),
+                phone: phoneEl.val(),
+                message: messageEl.val()
+            }
+
+            if (e) {
+                // check sum with users input to submit form
+                let nv = nameEl.val()
+                let ev = emailEl.val()
+                let pv = phoneEl.val()
+                let mv = messageEl.val()
+                if (nv === "" || ev === "" || pv === "" || mv === "") {
+                    errMessage.text('Please Include all Information')
+                    errMessageDiv.show();
+                } else if (userSum === sum) {
+                    console.log(email)
+                    console.log('form submitted!')
+                    humanPass = true;
+                    successFunc();
+
+                } else {
+                    console.log('human check didnt pass')
+                    console.log(userSum)
+                    errMessage.text('Please Check that you are Human')
+                    errMessageDiv.show();
+                    setTimeout(() => {
+                        errMessageDiv.fadeOut(500);
+                    }, 3000)
+                }
+            }
+        });
+
+    });
+
+</script>
+
+</html>
