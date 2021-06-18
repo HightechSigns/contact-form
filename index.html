@@ -55,8 +55,8 @@
         successMessage.hide();
         errMessageDiv.hide();
         // make up random number
-        var a = Math.floor(Math.random() * 11);
-        var b = Math.floor(Math.random() * 11);
+        var a = Math.floor(Math.random() * 10) + 1;
+        var b = Math.floor(Math.random() * 10) + 1;
         // pass random nums into equation
         checkNumOneEl.text(a)
         checkNumTwoEl.text(b)
@@ -92,24 +92,40 @@
                 let ev = emailEl.val()
                 let pv = phoneEl.val()
                 let mv = messageEl.val()
-                if (nv === "" || ev === "" || pv === "" || mv === "") {
-                    errMessage.text('Please Include all Information')
+                if (nv === "") {
+                    nameEl.addClass('input-err')
+                    errMessage.text('Please Include Your Full Name')
                     errMessageDiv.show();
-                } else if (userSum === sum) {
+                } else if (ev === '') {
+                    emailEl.addClass('input-err')
+                    errMessage.text('Please Include Your Email')
+                    errMessageDiv.show();
+                } else if (pv === "") {
+                    phoneEl.addClass('input-err')
+                    errMessage.text('Please Include Your Phone Number')
+                    errMessageDiv.show();
+                } else if (mv === "") {
+                    messageEl.addClass('input-err')
+                    errMessage.text('Please Include A Message')
+                    errMessageDiv.show();
+                } else if (userSum !== sum) {
+                    console.log('human check didnt pass')
+                    console.log(userSum)
+                    errMessage.text('Please Confirm You Are Human')
+                    errMessageDiv.show();
+                } else {
                     console.log(email)
                     console.log('form submitted!')
                     humanPass = true;
                     successFunc();
-
-                } else {
-                    console.log('human check didnt pass')
-                    console.log(userSum)
-                    errMessage.text('Please Check that you are Human')
-                    errMessageDiv.show();
-                    setTimeout(() => {
-                        errMessageDiv.fadeOut(500);
-                    }, 3000)
                 }
+                setTimeout(() => {
+                    errMessageDiv.fadeOut(500);
+                    nameEl.removeClass('input-err')
+                    emailEl.removeClass('input-err')
+                    phoneEl.removeClass('input-err')
+                    messageEl.removeClass('input-err')
+                }, 3000)
             }
         });
 
